@@ -1,1 +1,102 @@
+**NexaLog Logistics — IT Department and Technical Support**
 
+## 1. **TICKET METADATA**
+ * **Ticket No.:** ```INC-2026-8942```
+ * **Status:** ```RESOLVED / CLOSED```
+ * **Requester:** Ricardo Mendes (Operations and Process Analyst)
+ * **Priority / SLA:** ```HIGH``` (4 Hours)
+ * **Assigned Technician:** IT Support / Help Desk Analyst
+ * **Category:** Hardware / Perfomance / Multitasking
+ * **Opened:** September 4, 2026 - 09:15
+ * **Closed:** September 4, 2026 - 11:30
+
+## 2. **PROBLEM DESCRIPTION (Reported Symptoms)**
+
+Employee Ricardo Mendes reported severe system slowness and frequent freezes on his workstation during his daily operational activities. The issue occurs critically when handling large Microsoft Excel reports while simultaneously participating in audio/video calls through Microsoft Teams and browsing with multiple tabs open in Microsoft Edge.
+
+## 3. INITIAL TECHNICAL AUDIT (Hardware Inventory)
+
+An inventory collection was performed through the terminal to verify the installed components:
+
+> First Step: Retrieves the CPU model, number of Physical cores, and maximum clock speed.
+
+<img width="979" height="512" alt="image_01" src="https://github.com/user-attachments/assets/e546ed18-a233-4c85-82b2-4af808925785" />
+
+> Second Step: Display the total amount of physical RAM installed on the computer.
+
+<img width="979" height="512" alt="image_02" src="https://github.com/user-attachments/assets/41ba6e0f-552a-48ea-9d6a-86be52e510c3" />
+
+> Third Step: Displays the available logical drives, their toal storage capacity, and the amount of free space on each drive.
+
+<img width="979" height="512" alt="image_03" src="https://github.com/user-attachments/assets/fbd3852f-e65f-468e-bf19-71f1ed9105a6" />
+
+> Fourth Step: Retrives information about the physical storage devices, including their device ID, media type (SSD/HDD), and total capacity.
+
+<img width="979" height="512" alt="image_04" src="https://github.com/user-attachments/assets/5dbf6399-43c4-4e20-9b00-da547773e210" />
+
+> Fifth Step: Displays the operating system name and version installed on the computer.
+
+<img width="979" height="512" alt="image_05" src="https://github.com/user-attachments/assets/34ab46ec-f2f8-4f0c-899d-dc58d0cbd70b" />
+
+## Status:
+
+* **Operating System**: Microsoft Windows 10 Home (Build 19045 - 64-bit)
+* **Processor (CPU):** AMD Ryzen 7 1700X Eight-Core Processor (2 vCPUs) @ 3.40 GHz
+* **Installed RAM:** 4,096 MB (4.00 GB)
+* **Storage:** 80 GB Virtual SSD (71.9 GB of free space on the ```C:``` partition)
+
+## 4. **ROOT CAUSE (Reported Symptoms)**
+
+Comparing the data extracted from the terminal with Microsoft's official documentation for Microsoft 365 and Microsofft Teams (https://support.microsoft.com/en-us/office/system-requirements/system-requirements-for-microsoft-365-for-business-education-and-government-use)
+
+* **Processor and Storage:** The CPU (Ryzen 7 at 3.40 GHz) and available disk space (71.9 GB free) are well above the minimum requirements, ruling out these components as primary causes of the system slowness.
+
+* **RAM**: The system has 4 G  of RAM, which is exactly the minimum requirement for running Windows 10 and Microsoft 365 independently. When video calls in Teams are performed simultaneously with spreadsheets and the Microsoft Edge browser, physical memory reaches 100% utilization, forcing the system to rely on disk paging and resulting in system freezes.
+
+## Evidences:
+
+> Task Manager demonstrating severe RAM saturation (3.5 GB / 4.0 GB at 87%-90%) and CPU instability caused by running 10 browser tabs and system apps.
+
+<img width="1023" height="768" alt="evidence_n1" src="https://github.com/user-attachments/assets/e31b6194-7e87-49a6-a2ef-e9fec04371f5" />
+
+<img width="1023" height="768" alt="evidence_n2" src="https://github.com/user-attachments/assets/041a458c-5bc0-4087-8038-9fd96fc6e689" />
+
+> Audit of Windows system directories (temp, %temp%, and prefetch) prior to automated cleanup.
+
+<img width="1023" height="768" alt="evidence_n3" src="https://github.com/user-attachments/assets/e3d4407e-1f17-4b75-93fa-adb307c910b3" />
+
+## 5. **CORRECTIVE ACTIONS PERFORMED**
+
+### 5.1 **Software Optimization and System Maintenance (PowerShell)**
+
+An automated PowerShell maintenance routine was executed to remove log files, cache files, and prefetch data:
+
+> Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+> Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+> Remove-Item -Path "C:\Windows\Prefetch\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+<img width="1023" height="768" alt="powershellscriptcommand" src="https://github.com/user-attachments/assets/28a56c53-d9f7-422c-a15d-5e099c54361c" />
+
+### 5.2 **Physical RAM Upgrade (Hardware)**
+
+Thw workstation was powered off and underwent a hardware upgrade, increasing the installed memory from **4,096 MB (4 GB) to 8,192 MB (8GB).**
+
+<img width="782" height="518" alt="memoryupgrade" src="https://github.com/user-attachments/assets/ddbe628f-0950-4e07-a508-dbbc3868e092" />
+
+## 6. **POST-SERVICE VALIDATION AND PERFORMANCE COMPARISON**
+
+| **Evaluation Metric** | **Before Service** | **After Solution (Upgrade)** | **Technical Result** |
+| :--- | :--- | :--- | :--- |
+| **Total RAM** | 4.0 GB | **8.0 GB** | Capacity increased by + 100% |
+| **RAM Usage During Multitasking** | 3.5 GB (87% - 90%) | **4.4 GB(55%)** | Usage stabilized within the recommended operating margin |
+| **Available Memory** | ~0.5 GB | **~3.6 GB** | Capacity increased by + 100% | Significant reduction in paging activity |
+| **CPU Spikes Caused by Paging** | 19% to 100% (Frequent) | **Stabilized** | User interface freezes were eliminated |
+
+<img width="1025" height="768" alt="resolution" src="https://github.com/user-attachments/assets/beb75276-9685-4ac0-b10a-9a380d436daa" />
+
+## 7. **PREVENTIVE RECOMMENDATIONS TO THE USER**
+
+1. Close inactive Microsoft Edge tabs when participating in Microsoft Teams calls.
+2. Schedule automatic cleanup of temporary files using the Windows 10 _Storage Sense_ feature.
