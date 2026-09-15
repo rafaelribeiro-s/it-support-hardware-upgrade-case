@@ -81,3 +81,6 @@ Audit of Windows system directories (temp, %temp%, and prefetch) prior to automa
 
 ### Evidence 3: Post-Upgrade Verification
 Task Manager after upgrading to 8.0 GB RAM, confirming stable memory usage at 55% (4.4 GB) under full operational load.
+
+You can follow the entire procedure here: [FINAL IT TICKET SERVICE REPORT](https://github.com/rafaelribeiro-s/it-support-hardware-upgrade-case/wiki/FINAL-IT-TICKET-SERVICE-REPORT?utm_source=chatgpt.com)
+
